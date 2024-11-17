@@ -8,45 +8,57 @@ int main()
 
     InitWindow(windowWidth,windowHeight,"Infinite Ruunner");
 
-    const int rectWidth = 50;
-    const int rectheight = 80;
-    const int gravity= 1;
-    int pos_x = (windowWidth/2);
-    int pos_y = (windowHeight-rectheight);
-    int velocity = 10;
+    Texture2D player = LoadTexture("textures/scarfy.png");
     
+    Rectangle playerRec;
+    playerRec.width = player.width/6;
+    playerRec.height = player.height;
+    playerRec.x =0;
+    playerRec.y = 0;
+    Vector2 playerPos;
+    playerPos.x = windowWidth/2 - playerRec.width/2;
+    playerPos.y = windowHeight - playerRec.height;
+
+
+    const int gravity= 1;
+
+    int velocity = 0;
+    int jumpValue = -22;
+    bool isGrounded;
+
     SetTargetFPS(144);
     while (!WindowShouldClose())
     {
         BeginDrawing();
         ClearBackground(WHITE);
 
-        if (pos_y>=windowHeight - rectheight)
+        if (playerPos.y>=windowHeight - playerRec.height)
         {       
            velocity = 0; //on the ground
+           isGrounded = true;
         } 
         else
         {
             /// in the air
-            velocity +=gravity;
-           
-            
+            velocity +=gravity;           
+            isGrounded = false;
         }
 
 
-        if (IsKeyPressed(KEY_SPACE))
+        if (IsKeyPressed(KEY_SPACE) && isGrounded)
         {
             // Jump pressed
-            velocity -= 10;
+            velocity += jumpValue;
             
         }
      
-        pos_y += velocity;
+        playerPos.y += velocity;
        
+        DrawTextureRec(player,playerRec,playerPos,WHITE);
         
-        DrawRectangle(pos_x,pos_y,rectWidth,rectheight,RED);
         EndDrawing();
     }
+    UnloadTexture(player);
     CloseWindow();
 
 }
