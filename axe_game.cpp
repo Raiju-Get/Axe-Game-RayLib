@@ -1,6 +1,6 @@
 #include "raylib.h"
 
-int main()
+int mainGame()
 {
 
     int width = 1280;
